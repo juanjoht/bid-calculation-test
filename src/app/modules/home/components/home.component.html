@@ -1,0 +1,85 @@
+
+<div class="grid">
+    <div class="col-12">
+        <h2 class="ml-4">The Bid Calculation</h2>
+    </div>
+    <div class="col-7">
+        <p-fieldset legend="Calculation">
+            <form [formGroup]="formGroup"> 
+                <div class="formgroup-inline">
+                    <div class="field">
+                        <span class="p-float-label">
+                            <p-inputNumber inputId="locale-us" formControlName="basePrice" currency="USD" mode="currency" locale="en-US" [minFractionDigits]="0"></p-inputNumber>
+                            <label for="locale-us">Vehicle Price</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid"  *ngIf="submitted && controlsFormGroup['basePrice']?.errors?.['required']">
+                            Vehicle Price is required
+                        </small> 
+                    </div>
+                    <div class="field">
+                        <span class="p-float-label">
+                            <p-dropdown [options]="vehicleTypes" formControlName="selectedType" placeholder="Select a vehicle type" optionLabel="name" optionValue="name" inputId="float-label"></p-dropdown>
+                            <label for="float-label">Select a vehicle type</label>
+                        </span>
+                        <small class="ng-dirty ng-invalid"  *ngIf="submitted && controlsFormGroup['selectedType']?.errors?.['required']">
+                            Vehicle type is required
+                        </small>  
+                    </div>
+                    <p-button label="Calculate" icon="pi pi-check" (click)="calculateAmount();"></p-button>
+                    <p-button class="ml-2" label="Clear" severity="secondary" icon="pi pi-times" (click)="clearResults();"></p-button>
+                </div>
+                <div>
+                    <p-table  [value]="resultCalcultationFees" [tableStyle]="{ 'min-width': '50rem' }">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Vehicle Price</th>
+                                <th>Vehicle Type</th>
+                                <th>Basic fee</th>
+                                <th>Special fee</th>
+                                <th>Association fee</th>
+                                <th>Storage fee</th>
+                                <th>Total</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-vehicle>
+                            <tr>
+                                <td>{{ vehicle.basePrice | currency }}</td>
+                                <td>{{ vehicle.vehicleType }}</td>
+                                <td>{{ vehicle.BasicFee | currency}}</td>
+                                <td>{{ vehicle.SpecialFee | currency}}</td>
+                                <td>{{ vehicle.AssociationFee | currency}}</td>
+                                <td>{{ vehicle.StorageFee | currency}}</td>
+                                <td>{{ vehicle.Total | currency}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+        </form>
+        </p-fieldset>
+        
+    </div>
+    <div class="col-5">
+        <p-fieldset legend="List of Fixed and Variable Costs" [toggleable]="true">
+                <div class="m-0">
+                    <p class="mt-0">Basic user fee: 10% of the price of the vehicle</p>
+                    <ul class="list-disc">
+                        <li>Common car: minimum $10 and maximum $50</li>
+                        <li>Luxury car: minimum 25$ and maximum 200$</li>
+                    </ul>
+                    <p>The seller's special fee</p>
+                    <ul class="list-disc">
+                        <li>Common car: 2% of the vehicle price</li>
+                        <li>Luxury car: 4% of the vehicle price</li>
+                    </ul>
+                    <p>The added costs for the association based on the price of the vehicle</p>
+                    <ul class="list-disc">
+                        <li>$5 for an amount between $1 and $500</li>
+                        <li>$10 for an amount greater than $500 up to $1000</li>
+                        <li>$15 for an amount greater than $1000 up to $3000</li>
+                        <li>$20 for an amount over $3000</li>
+                    </ul>
+                    <p>A fixed storage fee of $100</p>
+                </div>
+        </p-fieldset>
+    </div>
+</div>
